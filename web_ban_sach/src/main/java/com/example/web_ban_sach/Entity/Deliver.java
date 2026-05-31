@@ -14,7 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@Email
+@Entity
 @Table(name = "deliver")
 public class Deliver {
     @Id
@@ -28,7 +28,7 @@ public class Deliver {
     @Column(name = "description",nullable = false)
     private String descriptionDeliver;
 
-    @Column(name = "deliverPrice", nullable = false)
+    @Column(name = "deliverPrice", nullable = false )
     private double deliverPrice;
 
     @OneToMany(mappedBy = "deliver",  fetch = FetchType.LAZY)

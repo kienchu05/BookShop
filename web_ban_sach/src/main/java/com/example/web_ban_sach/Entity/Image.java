@@ -28,7 +28,7 @@ public class Image {
     @Column(name = "link")
     private String linkToImage;
 
-    @Column(name = "data")
+    @Column(name = "data" , columnDefinition = "LONGTEXT")
     @Lob //Dùng để lưu trữ văn bản (text) có kích thước khổng lồ.
     private String dataImage;
 

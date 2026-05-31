@@ -13,16 +13,16 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "permission")
-public class Permission {
+@Table(name = "roles")
+public class Roles {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name ="permissionId", nullable=false, unique=true)
+    @Column(name ="role_id", nullable=false, unique=true)
     private long id;
 
     @Column(name = "name" , length = 255,  nullable = false)
     private String name;
 
-    @ManyToMany(mappedBy = "permissions", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
     List<UserAccount> userAccounts;
 }

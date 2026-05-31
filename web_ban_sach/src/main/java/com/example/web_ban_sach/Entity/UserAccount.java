@@ -1,14 +1,14 @@
 package com.example.web_ban_sach.Entity;
 
-import com.example.web_ban_sach.Enum.Role;
+//import com.example.web_ban_sach.Enum.Role;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+//import org.springframework.security.core.GrantedAuthority;
+//import org.springframework.security.core.authority.SimpleGrantedAuthority;
+//import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
@@ -19,7 +19,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "userAccounts")
-public class UserAccount implements UserDetails {
+public class UserAccount {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,10 +47,6 @@ public class UserAccount implements UserDetails {
     @Column(name = "gender", length = 100)
     private String gender;
 
-    @Column(name = "role", length = 50)
-    @Enumerated(value = EnumType.STRING)
-    private Role role;
-
     @Column(name = "purchaseAddress", nullable = false)
     private String purchaseAddress;
 
@@ -73,11 +69,11 @@ public class UserAccount implements UserDetails {
             CascadeType.REFRESH, CascadeType.DETACH
     })
     @JoinTable(
-            name = "user_permission",
-            joinColumns = @JoinColumn(name = "userId"),
-            inverseJoinColumns = @JoinColumn(name = "permissionId")
+            name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    List<Permission> permissions;
+    List<Roles> roles;
 
     @OneToMany(mappedBy = "userAccount",
             cascade = CascadeType.ALL, orphanRemoval = true)
@@ -87,26 +83,6 @@ public class UserAccount implements UserDetails {
             cascade = CascadeType.ALL,orphanRemoval = true)
     List<LovedList> lovedLists;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return role.getAuthorities();
 
-    }
-
-    @Override
-    public String getUsername() {
-        return userName;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
 
 }
