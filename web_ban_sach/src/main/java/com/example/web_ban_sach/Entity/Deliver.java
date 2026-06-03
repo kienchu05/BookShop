@@ -19,8 +19,7 @@ import java.util.List;
 public class Deliver {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "deliverId", nullable = false)
-    private long deliverId;
+    private Long deliverId;
 
     @Column(name = "name",length = 200,  nullable = false)
     private String nameDeliver;

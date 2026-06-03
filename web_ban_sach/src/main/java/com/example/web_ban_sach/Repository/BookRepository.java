@@ -14,4 +14,6 @@ public interface BookRepository extends JpaRepository<Book, Long> , JpaSpecifica
     //ContainingIgnoreCase có thể tìm kiếm 1 cách chính xác
 
     Page<Book> findByAuthorContainingIgnoreCase(@Param("author") String author, Pageable pageable);
+
+    Page<Book> findByCategories_Id(@Param("id") long id , Pageable pageable);
 }

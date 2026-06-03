@@ -16,8 +16,7 @@ public class RatingBook {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    private long id;
+    private Long id;
 
     @Column(name = "comment")
     private String comment;

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="11b45c68-1836-4b3d-be3f-8e30bd5942ac" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/Config/SecurityConfiguration.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/Controller/UserController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/DTO/Request/RegisterRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/DTO/Response/RegisterResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/Service/IUserService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/Service/UserServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/exception/Message.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/web_ban_sach.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/web_ban_sach/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/web_ban_sach/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/Entity/Book.java" beforeDir="false" afterPath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/Entity/Book.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/Entity/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/Entity/Category.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/Entity/Deliver.java" beforeDir="false" afterPath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/Entity/Deliver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/Entity/Image.java" beforeDir="false" afterPath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/Entity/Image.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/Entity/LovedList.java" beforeDir="false" afterPath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/Entity/LovedList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/Entity/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/Entity/Order.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/Entity/OrderDetails.java" beforeDir="false" afterPath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/Entity/OrderDetails.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/Entity/Payment.java" beforeDir="false" afterPath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/Entity/Payment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/Entity/RatingBook.java" beforeDir="false" afterPath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/Entity/RatingBook.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/Entity/Roles.java" beforeDir="false" afterPath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/Entity/Roles.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/Entity/UserAccount.java" beforeDir="false" afterPath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/Entity/UserAccount.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/Enum/Permission.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/Enum/Role.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/Repository/BookRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/Repository/BookRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/Repository/RatingBookRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/Repository/RatingBookRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/Repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/Repository/UserRepository.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Enum" />
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4,
+  &quot;fromUser&quot;: false
+}</component>
+  <component name="ProjectId" id="3EIdQ9otaDsYrcbLJBFz86GhkEU" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "Spring Boot.Unnamed.executor": "Run",
+    "Spring Boot.WebBanSachApplication.executor": "Run",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/Downloaded/WebBanSach/web_ban_sach/web_ban_sach/src/main/java/com/example/web_ban_sach/User1",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.lookFeel"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.example.web_ban_sach.Entity" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Downloaded\WebBanSach\web_ban_sach\web_ban_sach\src\main\java\com\example\web_ban_sach\User1" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Downloaded\WebBanSach\web_ban_sach\web_ban_sach" />
+    </key>
+    <key name="MoveInnerDialog.RECENTS_KEY">
+      <recent name="com.example.web_ban_sach.Service" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="configurationTypes">
+      <set>
+        <option value="Application" />
+        <option value="SpringBootApplicationConfigurationType" />
+      </set>
+    </option>
+    <option name="hiddenConfigurations">
+      <map>
+        <entry key="HttpClient.HttpRequestRunConfigurationType">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="SpringBootApplicationConfigurationType">
+          <value>
+            <set />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="excludedNewTypes">
+      <set>
+        <option value="HttpClient.HttpRequestRunConfigurationType" />
+        <option value="SpringBootApplicationConfigurationType" />
+      </set>
+    </option>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="11b45c68-1836-4b3d-be3f-8e30bd5942ac" name="Changes" comment="" />
+      <created>1779869998337</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1779869998337</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

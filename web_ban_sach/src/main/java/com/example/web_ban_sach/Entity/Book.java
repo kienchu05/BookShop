@@ -17,8 +17,7 @@ import java.util.List;
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "bookId", nullable = false)
-    private long id;
+    private Long id;
 
     @Column(name = "name" , length = 100,  nullable = false)
     private String name;
@@ -44,7 +43,7 @@ public class Book {
     @Column(name = "avgRating")
     private double avgRating;
 
-    @ManyToOne(fetch = FetchType.LAZY,  cascade = {
+    @ManyToMany(fetch = FetchType.LAZY,  cascade = {
             CascadeType.PERSIST,  CascadeType.MERGE,
             CascadeType.REFRESH, CascadeType.DETACH
     })
@@ -52,7 +51,11 @@ public class Book {
                     name = "book_category",
                     joinColumns = @JoinColumn(name = "bookId"),
                     inverseJoinColumns = @JoinColumn(name = "categoryId")
-            )
+            )    //SELECT b.* FROM books b
+    // INNER JOIN book_category bc ON b.bookId = bc.bookId
+    // WHERE bc.categoryId = 1
+    // ORDER BY b.bookId DESC
+    // OFFSET 0 ROWS FETCH NEXT 8 ROWS ONLY;
     List<Category> categories;
 
     @OneToMany(mappedBy = "book",

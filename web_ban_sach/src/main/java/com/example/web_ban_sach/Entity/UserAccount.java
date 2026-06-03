@@ -2,10 +2,7 @@ package com.example.web_ban_sach.Entity;
 
 //import com.example.web_ban_sach.Enum.Role;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 //import org.springframework.security.core.GrantedAuthority;
 //import org.springframework.security.core.authority.SimpleGrantedAuthority;
 //import org.springframework.security.core.userdetails.UserDetails;
@@ -17,20 +14,20 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 @Entity
 @Table(name = "userAccounts")
 public class UserAccount {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "userId", unique = true, nullable = false)
-    private long userId;
+    private Long userId;
 
     @Column(name = "name" , length = 100, nullable = false)
     private String name;
 
     @Column(name = "username" ,  length = 100, nullable = false, unique = true)
-    private String userName;
+    private String username;
 
     @Column(name = "password", length = 256, nullable = false)
     private String password;
@@ -41,16 +38,16 @@ public class UserAccount {
     @Column(name = "phone", nullable = false, unique = true)
     private String phone;
 
-    @Column(name = "address" ,  length = 200, nullable = false)
+    @Column(name = "address" , length = 200, nullable = true)
     private String address;
 
-    @Column(name = "gender", length = 100)
+    @Column(name = "gender", length = 100, nullable = true)
     private String gender;
 
-    @Column(name = "purchaseAddress", nullable = false)
+    @Column(name = "purchaseAddress")
     private String purchaseAddress;
 
-    @Column(name = "deliverAddress", nullable = false)
+    @Column(name = "deliverAddress")
     private String deliverAddress;
 
     @Column(name = "accessToken", length = 150, unique = true,  nullable = true)
@@ -63,7 +60,7 @@ public class UserAccount {
             cascade = CascadeType.ALL)
     List<Order> orders;
 
-    @ManyToMany(fetch = FetchType.LAZY,
+    @ManyToMany(fetch = FetchType.EAGER,
             cascade = {
             CascadeType.PERSIST,  CascadeType.MERGE,
             CascadeType.REFRESH, CascadeType.DETACH

@@ -22,4 +22,6 @@ public class Category {
 
     @ManyToMany(mappedBy = "categories")
     List<Book> books;
+
+
 }

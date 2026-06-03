@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 
 @RepositoryRestResource(path = "rating")
 public interface RatingBookRepository extends JpaRepository<RatingBook, Long> , JpaSpecificationExecutor<RatingBook> {
+
 }
