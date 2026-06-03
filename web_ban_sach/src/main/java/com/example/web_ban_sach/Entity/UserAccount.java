@@ -3,12 +3,16 @@ package com.example.web_ban_sach.Entity;
 //import com.example.web_ban_sach.Enum.Role;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 //import org.springframework.security.core.GrantedAuthority;
 //import org.springframework.security.core.authority.SimpleGrantedAuthority;
 //import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,7 +21,7 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "userAccounts")
-public class UserAccount {
+public class UserAccount implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,6 +60,12 @@ public class UserAccount {
     @Column(name = "refreshToken" ,  length = 150, unique = true,  nullable = true)
     private String refreshToken;
 
+    @Column(name = "isActivated")
+    private boolean isActivated =false;
+
+    @Column(name = "activatedCode")
+    private String activatedCode;
+
     @OneToMany(mappedBy = "userAccount",
             cascade = CascadeType.ALL)
     List<Order> orders;
@@ -81,5 +91,31 @@ public class UserAccount {
     List<LovedList> lovedLists;
 
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> grantedAuthorities = this.roles.stream().map(
+                role -> new SimpleGrantedAuthority("ROLE_" + role.getName().toUpperCase())
+        ).collect(Collectors.toList());
+        return grantedAuthorities;
+    }
 
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.isActivated();
+    }
 }

@@ -1,24 +1,32 @@
 package com.example.web_ban_sach.Config;
 
-import com.example.web_ban_sach.Service.UserServiceImpl;
+import com.example.web_ban_sach.Repository.UserRepository;
+import com.example.web_ban_sach.Service.ServiceImp.UserServiceImpl;
 import com.example.web_ban_sach.exception.ErrorHandler;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
 
 @Configuration
+@Slf4j
+@AllArgsConstructor
 public class SecurityConfiguration {
+    private final UserRepository userRepository;
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -49,7 +57,9 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(customize ->
                 customize
                         // Thêm đường dẫn chính xác của API kiểm tra
+                        .requestMatchers(HttpMethod.GET, "/user/activate-account").permitAll()
                         .requestMatchers(HttpMethod.POST, "/user-account/registerUser").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/user/login").permitAll()
                         .requestMatchers(HttpMethod.GET, "/user/check-username").permitAll()
                         .requestMatchers(HttpMethod.GET, "/user/check-email").permitAll()
                         .requestMatchers(HttpMethod.GET, "/user-account/search/**").hasRole("ADMIN")
@@ -67,4 +77,20 @@ public class SecurityConfiguration {
         dap.setPasswordEncoder(bCryptPasswordEncoder());
         return dap;
     }
+
+    @Bean
+    //kiểm tra thông tin đăng nhập, để bạn có thể đem ra sử dụng ở các chỗ khác (ví dụ như trong API Đăng nhập).
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) {
+        log.info("Create bean Authentication *********");
+        return authenticationConfiguration.getAuthenticationManager();//so sánh mật khẩu khách đưa với mật khẩu trong hồ sơ xem có khớp không. Khớp thì cấp quyền
+    }
+
+//    @Bean
+//    //Mặc định, Spring Security không biết bạn xài MySQL, Oracle, hay MongoDB.
+//    // Nó bắt bạn phải cung cấp một cái máy dò (UserDetailsService).
+//    public UserDetailsService userDetailsService(){
+//        return ((username) ->
+//                userRepository.findByUsername(username) //Nếu tìm thấy thì trả về thông tin (hồ sơ, mật khẩu đã mã hóa, quyền hạn)
+//                        .orElseThrow(() -> new UsernameNotFoundException("username not found!")));//Nếu không thấy sẽ ném lỗi
+//    }
 }

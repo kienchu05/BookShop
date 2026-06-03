@@ -1,12 +1,14 @@
-package com.example.web_ban_sach.Service;
+package com.example.web_ban_sach.Service.IService;
 
 import com.example.web_ban_sach.Entity.UserAccount;
 import org.springframework.http.ResponseEntity;
 
+import java.util.Optional;
+
 
 public interface IUserService {
-    UserAccount findByUsername(String username);
-    UserAccount findByEmail(String email);
+    Optional<UserAccount> findByUsername(String username);
+    Optional<UserAccount> findByEmail(String email);
 
     boolean existsByUsername(String username);
     boolean existsByEmail(String email);

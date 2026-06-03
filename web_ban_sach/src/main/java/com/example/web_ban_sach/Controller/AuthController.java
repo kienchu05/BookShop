@@ -1,9 +1,11 @@
 package com.example.web_ban_sach.Controller;
 
 import com.example.web_ban_sach.AuthService.AuthenticationService;
+import com.example.web_ban_sach.DTO.Request.LoginRequest;
 import com.example.web_ban_sach.DTO.Request.RegisterRequest;
+import com.example.web_ban_sach.DTO.Response.AuthenticationResponse;
 import com.example.web_ban_sach.DTO.Response.RegisterResponse;
-import com.example.web_ban_sach.Service.IUserService;
+import com.example.web_ban_sach.Service.IService.IUserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,5 +39,18 @@ public class AuthController {
     public ResponseEntity<?> checkEmail(@RequestParam("email") String email) {
         boolean exists = userService.existsByEmail(email);
         return ResponseEntity.ok(exists);
+    }
+
+    @GetMapping("/user/activate-account")
+    public ResponseEntity<?> activateAccount(@RequestParam("activationCode") String activationCode){
+        return authenticationService.activateAccount(activationCode);
+    }
+
+    @PostMapping("user/login")
+    public ResponseEntity<AuthenticationResponse> login(@Valid @RequestBody LoginRequest loginRequest){
+        AuthenticationResponse response = authenticationService.login(loginRequest);
+        return ResponseEntity
+                .status(response.getStatus())
+                .body(response);
     }
 }

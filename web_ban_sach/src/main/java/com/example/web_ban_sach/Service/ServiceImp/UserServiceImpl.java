@@ -1,11 +1,13 @@
-package com.example.web_ban_sach.Service;
+package com.example.web_ban_sach.Service.ServiceImp;
 
 import com.example.web_ban_sach.Entity.UserAccount;
 import com.example.web_ban_sach.Repository.RoleRepository;
 import com.example.web_ban_sach.Repository.UserRepository;
+import com.example.web_ban_sach.Service.IService.IUserService;
 import com.example.web_ban_sach.exception.Message;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -14,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -23,12 +26,12 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
     private UserRepository userRepository;
     private RoleRepository roleRepository;
     @Override
-    public UserAccount findByUsername(String username) {
+    public Optional<UserAccount> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 
     @Override
-    public UserAccount findByEmail(String email) {
+    public Optional<UserAccount> findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
@@ -53,18 +56,16 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
         UserAccount user = userRepository.save(userAccount);
         return ResponseEntity.ok("Đăng kí thành công !");
     }
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserAccount user = userRepository.findByUsername(username);
-        if(user == null) {
-            throw new UsernameNotFoundException(username);
+        // Dùng Optional cho an toàn
+        UserAccount user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Không tìm thấy user: " + username));
+
+        // Chặn user chưa kích hoạt
+        if (!user.isActivated()) {
+            throw new DisabledException("Tài khoản chưa được kích hoạt, vui lòng kiểm tra email!");
         }
-        List<GrantedAuthority> grantedAuthorities = user.getRoles().stream().map(
-                role -> new SimpleGrantedAuthority("ROLE_" + role.getName().toUpperCase())
-        ).collect(Collectors.toList());
-
-        return new User(user.getUsername(), user.getPassword(), grantedAuthorities);
-
+        return user;
     }
 }
