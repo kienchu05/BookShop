@@ -49,8 +49,10 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(customize ->
                 customize
                         // Thêm đường dẫn chính xác của API kiểm tra
-                        .requestMatchers(HttpMethod.GET, "/user-account/search/existsByUsername").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/user-account/search/existsByEmail").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/user-account/registerUser").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/user/check-username").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/user/check-email").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/user-account/search/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/book/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/image/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/user-account").hasRole("ADMIN")

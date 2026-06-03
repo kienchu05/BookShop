@@ -8,5 +8,8 @@ public interface IUserService {
     UserAccount findByUsername(String username);
     UserAccount findByEmail(String email);
 
+    boolean existsByUsername(String username);
+    boolean existsByEmail(String email);
+
     ResponseEntity<?> registerUser(UserAccount userAccount);
 }

@@ -33,6 +33,16 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
     }
 
     @Override
+    public boolean existsByUsername(String username) {
+        return userRepository.existsByUsername(username);
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
+    @Override
     public ResponseEntity<?> registerUser(UserAccount userAccount) {
         if(userRepository.existsByUsername(userAccount.getUsername())) {
             return ResponseEntity.badRequest().body(new Message("Username Exsisted !"));
@@ -44,6 +54,7 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
         return ResponseEntity.ok("Đăng kí thành công !");
     }
 
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserAccount user = userRepository.findByUsername(username);
         if(user == null) {

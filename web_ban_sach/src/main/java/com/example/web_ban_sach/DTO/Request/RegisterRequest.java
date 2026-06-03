@@ -22,8 +22,4 @@ public class RegisterRequest {
 
     @NotNull(message = "Phone must not be null")
     private String phone;
-
-    @NotNull(message =  "Role must not be null !")
-    @Pattern(regexp = "ADMIN|MANAGER|USER", message = "The role must be ADMIN , MANAGER or USER !")
-    private String role;
 }
