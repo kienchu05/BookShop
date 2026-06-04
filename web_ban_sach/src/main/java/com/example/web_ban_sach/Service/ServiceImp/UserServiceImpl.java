@@ -6,6 +6,7 @@ import com.example.web_ban_sach.Repository.UserRepository;
 import com.example.web_ban_sach.Service.IService.IUserService;
 import com.example.web_ban_sach.exception.Message;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.GrantedAuthority;
@@ -56,6 +57,22 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
         UserAccount user = userRepository.save(userAccount);
         return ResponseEntity.ok("Đăng kí thành công !");
     }
+
+    @Override
+    public ResponseEntity<?> deleteUser(Long id) {
+        Optional<UserAccount> userAccount = userRepository.findById(id);
+        if(!userAccount.isPresent()) {
+            return ResponseEntity.badRequest().body(new Message("UserAccount Not Found !"));
+        }
+        try {
+            userRepository.deleteById(id);
+            return ResponseEntity.ok(new Message("Xóa sách thành công!"));
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new Message("Lỗi khi xóa sách: " + e.getMessage()));
+        }
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         // Dùng Optional cho an toàn

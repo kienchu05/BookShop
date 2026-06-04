@@ -4,7 +4,9 @@ import com.example.web_ban_sach.DTO.Request.LoginRequest;
 import com.example.web_ban_sach.DTO.Request.RegisterRequest;
 import com.example.web_ban_sach.DTO.Response.AuthenticationResponse;
 import com.example.web_ban_sach.DTO.Response.RegisterResponse;
+import com.example.web_ban_sach.Entity.Roles;
 import com.example.web_ban_sach.Entity.UserAccount;
+import com.example.web_ban_sach.Repository.RoleRepository;
 import com.example.web_ban_sach.Repository.UserRepository;
 import com.example.web_ban_sach.Service.IService.MailService;
 import com.example.web_ban_sach.exception.Message;
@@ -18,9 +20,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailSender;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -35,6 +40,8 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     private UserRepository userRepository;
+    private RoleRepository roleRepository;
+
     private PasswordEncoder passwordEncoder;
     private MailService  mailService;
 
@@ -69,6 +76,13 @@ public class AuthenticationService {
                 .activatedCode(activatedCode())
                 .isActivated(false)
                 .build();
+        Roles defaultRole = roleRepository.findByName("USER")
+                .orElseThrow(() -> new RuntimeException("Lỗi: Không tìm thấy quyền USER trong Database!"));
+        // Tạo một list quyền và thêm quyền mặc định vào
+        List<Roles> roles = new ArrayList<>();
+        roles.add(defaultRole);
+        // Gán list quyền cho user mới
+        userAccount.setRoles(roles);
         userRepository.save(userAccount);
             try {
                sendEmailtoActive(userAccount.getEmail(), userAccount.getActivatedCode());
@@ -108,6 +122,7 @@ public class AuthenticationService {
             user.setAccessToken(accessToken);
             user.setRefreshToken(refreshToken);
             userRepository.save(user);
+            System.out.println("Quyền của user hiện tại: " + SecurityContextHolder.getContext().getAuthentication().getAuthorities());
             return AuthenticationResponse.builder()
                     .userId(user.getUserId())
                     .status(HttpStatus.OK.value())

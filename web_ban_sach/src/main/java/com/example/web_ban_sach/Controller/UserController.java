@@ -19,6 +19,11 @@ public class UserController {
         return userService.registerUser(userAccount);
     }
 
+    @DeleteMapping("/user-account/delete/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable("id") Long id) {
+        return userService.deleteUser(id);
+    }
+
     @GetMapping("/test-hello")
     public String test() {
         return "HELLO KIEN, DUNG LA DU AN NAY ROI!";

@@ -40,9 +40,9 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http , ErrorHandler errorHandler) throws Exception {
         http
-                .httpBasic(Customizer.withDefaults())
+//                .httpBasic(Customizer.withDefaults())
                 .csrf((customizer) -> customizer.disable())
-
+//                .anonymous(anonymous -> anonymous.disable())
                 //@CrossOrigin : Cho phép trình duyệt (từ domain này) gọi API đến server (domain khác).
                 .cors(cors -> {
                     cors.configurationSource(request -> {
@@ -69,6 +69,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET, "/user/check-username").permitAll()
                         .requestMatchers(HttpMethod.GET, "/user/check-email").permitAll()
                         .requestMatchers(HttpMethod.GET, "/user-account/search/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/user-account/**").hasRole("ADMIN")
 
                         .requestMatchers(HttpMethod.GET, "/book/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/category/**").permitAll()

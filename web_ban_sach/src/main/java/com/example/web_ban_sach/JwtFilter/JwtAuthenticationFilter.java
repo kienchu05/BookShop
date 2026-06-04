@@ -30,6 +30,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         //1.Lay ra header
+        log.info("Filter đang chạy, Auth hiện tại: {}", SecurityContextHolder.getContext().getAuthentication());
         final String authorizationHeader = request.getHeader("Authorization");
 
         //2.Kiem tra xem header co  chua chuoi "Bearer " hay khoong
@@ -48,7 +49,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         //(Tức là nhằm việc xác thực một user chưa từng đc xác thức một lần nào)
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-
+            log.info("User: {}, Quyền nạp vào: {}", username, userDetails.getAuthorities());
             //6.Kiểm tra xem token còn hạn và có khớp với user không
             if(jwtService.isTokenValid(token, userDetails)) {
                 // 7. Tạo đối tượng Authentication chứa quyền (Roles) của user (Thẻ thông hành)
@@ -62,6 +63,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         new WebAuthenticationDetailsSource().buildDetails(request));
                 // 8. Cập nhật SecurityContext -> Chính thức xác nhận là user đã đăng nhập!
                 SecurityContextHolder.getContext().setAuthentication(authToken);
+                log.info("Đã nạp quyền vào Context. Context hiện tại: {}", SecurityContextHolder.getContext().getAuthentication().getAuthorities());
             };
         }
         // 9. Cho phép request đi tiếp tới các Filter khác hoặc Controller

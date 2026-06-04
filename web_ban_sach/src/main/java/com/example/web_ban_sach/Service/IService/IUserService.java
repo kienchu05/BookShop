@@ -14,4 +14,5 @@ public interface IUserService {
     boolean existsByEmail(String email);
 
     ResponseEntity<?> registerUser(UserAccount userAccount);
+    ResponseEntity<?> deleteUser(Long id);
 }

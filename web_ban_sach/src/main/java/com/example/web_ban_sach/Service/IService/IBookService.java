@@ -6,4 +6,5 @@ import org.springframework.http.ResponseEntity;
 public interface IBookService {
     ResponseEntity<?> addBook(BookRequest bookRequest);
     ResponseEntity<?> updateBook(BookRequest bookRequest, Long id);
+
 }
