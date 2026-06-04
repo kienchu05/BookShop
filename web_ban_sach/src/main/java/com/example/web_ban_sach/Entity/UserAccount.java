@@ -1,6 +1,7 @@
 package com.example.web_ban_sach.Entity;
 
 //import com.example.web_ban_sach.Enum.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -61,7 +62,7 @@ public class UserAccount implements UserDetails {
     private String refreshToken;
 
     @Column(name = "isActivated")
-    private boolean isActivated =false;
+    private Boolean isActivated = false;
 
     @Column(name = "activatedCode")
     private String activatedCode;
@@ -80,6 +81,7 @@ public class UserAccount implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
+            @JsonIgnore
     List<Roles> roles;
 
     @OneToMany(mappedBy = "userAccount",
@@ -116,6 +118,6 @@ public class UserAccount implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return this.isActivated();
+        return this.isActivated != null && this.isActivated;
     }
 }

@@ -6,11 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="11b45c68-1836-4b3d-be3f-8e30bd5942ac" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/Config/SecurityConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/Config/SecurityConfiguration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/Controller/BookController.java" beforeDir="false" afterPath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/Controller/BookController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/AuthService/AuthenticationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/AuthService/AuthenticationService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/DTO/Request/BookRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/DTO/Request/BookRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/Service/IService/IBookService.java" beforeDir="false" afterPath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/Service/IService/IBookService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/Entity/Roles.java" beforeDir="false" afterPath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/Entity/Roles.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/Entity/UserAccount.java" beforeDir="false" afterPath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/Entity/UserAccount.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/Service/ServiceImp/BookServiceImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/Service/ServiceImp/BookServiceImp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/Service/ServiceImp/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/web_ban_sach/src/main/java/com/example/web_ban_sach/Service/ServiceImp/UserServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

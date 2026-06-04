@@ -34,4 +34,6 @@ public class BookRequest {
 
     @NotEmpty(message = "Thể loại không được để trống !")
     private List<String> categories;
+
+    private List<String> images;
 }

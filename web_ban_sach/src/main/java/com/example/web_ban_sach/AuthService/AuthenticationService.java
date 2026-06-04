@@ -87,10 +87,10 @@ public class AuthenticationService {
             return ResponseEntity.badRequest().body(new Message("Mã kích hoạt không hợp lệ hoặc đã hết hạn!"));
         }
         UserAccount user = userAccount.get();
-        if (user.isActivated()) {
+        if (user.getIsActivated()) {
             return ResponseEntity.badRequest().body(new Message("Tài khoản đã được kích hoạt rồi!"));
         }
-            user.setActivated(true);
+            user.setIsActivated(true);
             user.setActivatedCode("");
             userRepository.save(user);
          return ResponseEntity.badRequest().body(new Message("Kích hoạt tài khoản thành công !"));

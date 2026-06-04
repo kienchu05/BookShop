@@ -13,8 +13,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import com.example.web_ban_sach.Entity.Image;
 
-import javax.swing.text.html.Option;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -100,6 +101,32 @@ public class BookServiceImp implements IBookService {
                 }
                 book.setCategories(new ArrayList<>(categoryList) {
                 });
+            }
+            // Đảm bảo danh sách không bị null trước khi xử lý
+            if(book.getImages() == null ){
+                book.setImages(new ArrayList<>());
+            }
+            int cntImages = book.getImages().size();
+            boolean needAvatar = (cntImages == 0);
+            if(bookRequest.getImages() != null && !bookRequest.getImages().isEmpty()) {
+                List<Image> imagesList = new ArrayList<>();
+                for (String base64Image : bookRequest.getImages()) {
+                    Image image = new Image();
+                    image.setDataImage(base64Image);
+                    image.setBook(book);
+
+                    if(needAvatar){
+                        image.setAvatar(true);
+                        image.setName(bookRequest.getName() + " - Avatar");
+                        needAvatar = false;
+                    }
+                    else {
+                        image.setAvatar(false); // Gán làm ảnh phụ
+                        // Đặt tên nối tiếp (Ví dụ: đang có 1 ảnh, thêm 2 ảnh thì sẽ là Ảnh 2, Ảnh 3)
+                        image.setName(book.getName() + " - Ảnh phụ ");
+                    }
+                    book.getImages().add(image);
+                }
             }
             bookRepository.save(book);
             return ResponseEntity.ok(new Message("Cập nhật sách thành công!"));

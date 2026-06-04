@@ -63,7 +63,7 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("Không tìm thấy user: " + username));
 
         // Chặn user chưa kích hoạt
-        if (!user.isActivated()) {
+        if (!user.getIsActivated()) {
             throw new DisabledException("Tài khoản chưa được kích hoạt, vui lòng kiểm tra email!");
         }
         return user;
