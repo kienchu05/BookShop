@@ -1,10 +1,12 @@
 package com.example.web_ban_sach.Config;
 
+import com.example.web_ban_sach.JwtFilter.JwtAuthenticationFilter;
 import com.example.web_ban_sach.Repository.UserRepository;
 import com.example.web_ban_sach.Service.ServiceImp.UserServiceImpl;
 import com.example.web_ban_sach.exception.ErrorHandler;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -18,6 +20,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
 import java.util.Arrays;
@@ -27,6 +30,7 @@ import java.util.Arrays;
 @AllArgsConstructor
 public class SecurityConfiguration {
     private final UserRepository userRepository;
+    private final JwtAuthenticationFilter  jwtAuthenticationFilter;
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -38,6 +42,7 @@ public class SecurityConfiguration {
         http
                 .httpBasic(Customizer.withDefaults())
                 .csrf((customizer) -> customizer.disable())
+
                 //@CrossOrigin : Cho phép trình duyệt (từ domain này) gọi API đến server (domain khác).
                 .cors(cors -> {
                     cors.configurationSource(request -> {
@@ -54,6 +59,7 @@ public class SecurityConfiguration {
                 .exceptionHandling(customizer -> customizer
                         .authenticationEntryPoint(errorHandler)
                         .accessDeniedHandler(errorHandler))
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class) // giải mã token để lấy quyền
                 .authorizeHttpRequests(customize ->
                 customize
                         // Thêm đường dẫn chính xác của API kiểm tra
@@ -63,8 +69,16 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET, "/user/check-username").permitAll()
                         .requestMatchers(HttpMethod.GET, "/user/check-email").permitAll()
                         .requestMatchers(HttpMethod.GET, "/user-account/search/**").hasRole("ADMIN")
+
                         .requestMatchers(HttpMethod.GET, "/book/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/category/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/book/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/book/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/book/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/book/add-book").hasRole("ADMIN")
+
                         .requestMatchers(HttpMethod.GET, "/image/**").permitAll()
+
                         .requestMatchers(HttpMethod.GET, "/user-account").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/user-account/register").permitAll()
                 );
@@ -83,6 +97,11 @@ public class SecurityConfiguration {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) {
         log.info("Create bean Authentication *********");
         return authenticationConfiguration.getAuthenticationManager();//so sánh mật khẩu khách đưa với mật khẩu trong hồ sơ xem có khớp không. Khớp thì cấp quyền
+    }
+
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
     }
 
 //    @Bean
