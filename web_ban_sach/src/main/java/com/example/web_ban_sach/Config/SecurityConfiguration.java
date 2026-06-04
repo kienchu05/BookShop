@@ -75,7 +75,8 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.POST, "/book/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/book/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/book/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/book/add-book").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/book/add-book").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/book/update-book").hasRole("ADMIN")
 
                         .requestMatchers(HttpMethod.GET, "/image/**").permitAll()
 

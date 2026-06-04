@@ -49,18 +49,17 @@ public class BookServiceImp implements IBookService {
             newBook.setPriceFinal(bookRequest.getPriceFinal());
             newBook.setDescription(bookRequest.getDescription());
             newBook.setQuantity(bookRequest.getQuantity());
-            newBook.setAvgRating(0.0);  
+            newBook.setAvgRating(0.0);
 
-            if (bookRequest.getCategoryNames() != null) {
+            if (bookRequest.getCategories() != null) {
                 List<Category> categoryList = new ArrayList<>();
 
-                for (String name : bookRequest.getCategoryNames()) {
+                for (String name : bookRequest.getCategories()) {
                     // Tìm thể loại trong DB theo tên
                     categoryRepository.findByNameIgnoreCase(name).ifPresent(category -> {
                         categoryList.add(category); // Nếu tìm thấy thì thêm vào list
                     });
                 }
-
                 newBook.setCategories(new ArrayList<>(categoryList) {
                 });
             }
@@ -72,6 +71,41 @@ public class BookServiceImp implements IBookService {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new Message("Lỗi hệ thống khi lưu sách: " + e.getMessage()));
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> updateBook(BookRequest bookRequest, Long id) {
+        try {
+            Optional<Book> optionalBook = bookRepository.findById(id);
+            if (optionalBook.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(new Message("Lỗi: Không tìm thấy sách với ID = " + id));
+            }
+            Book book = optionalBook.get();
+            book.setIsbn(bookRequest.getIsbn());
+            book.setName(bookRequest.getName());
+            book.setAuthor(bookRequest.getAuthor());
+            book.setPriceInit(bookRequest.getPriceInit());
+            book.setPriceFinal(bookRequest.getPriceFinal());
+            book.setDescription(bookRequest.getDescription());
+            book.setQuantity(bookRequest.getQuantity());
+            book.setAvgRating(bookRequest.getAvgRating());
+            if (bookRequest.getCategories() != null) {
+                List<Category> categoryList = new ArrayList<>();
+                for (String name : bookRequest.getCategories()) {
+                    categoryRepository.findByNameIgnoreCase(name).ifPresent(category -> {
+                        categoryList.add(category);
+                    });
+                }
+                book.setCategories(new ArrayList<>(categoryList) {
+                });
+            }
+            bookRepository.save(book);
+            return ResponseEntity.ok(new Message("Cập nhật sách thành công!"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new Message("Lỗi hệ thống: " + e.getMessage()));
         }
     }
 }

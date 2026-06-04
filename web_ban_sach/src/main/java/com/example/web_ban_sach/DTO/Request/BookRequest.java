@@ -33,5 +33,5 @@ public class BookRequest {
     private double avgRating;
 
     @NotEmpty(message = "Thể loại không được để trống !")
-    private List<String> categoryNames;
+    private List<String> categories;
 }
