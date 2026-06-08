@@ -12,6 +12,7 @@ import com.example.web_ban_sach.Service.IService.MailService;
 import com.example.web_ban_sach.exception.Message;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
+import jakarta.validation.ValidationException;
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,13 +22,12 @@ import org.springframework.mail.MailSender;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -115,7 +115,7 @@ public class AuthenticationService {
         log.info("Login response body : {}", loginRequest);
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
         Optional<UserAccount> userAccount = userRepository.findByUsername(loginRequest.getUsername());
-        if(userAccount.isPresent()){
+        if (userAccount.isPresent()) {
             UserAccount user = userAccount.get();
             String accessToken = jwtService.generateAccessToken(user);
             String refreshToken = jwtService.generateRefreshToken(user);
@@ -133,12 +133,63 @@ public class AuthenticationService {
                             .map(role -> role.getName()) // Giả sử Role có hàm getName()
                             .collect(Collectors.joining(", "))) // Gộp thành chuỗi: "USER, ADMIN"
                     .build();
-        }
-        else{
+        } else {
             return AuthenticationResponse.builder()
                     .message("Login failed !")
                     .status(HttpStatus.FORBIDDEN.value())
                     .build();
         }
+    }
+
+    public ResponseEntity<?> refreshToken(String authHeader) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new Message("Auth Header is incorrect !"));
         }
+
+        String refreshToken = authHeader.substring(7);
+
+        try {
+            String username = jwtService.extractUsername(refreshToken);
+            if (!StringUtils.hasText(username)) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body(new Message("Invalid Refresh Token"));
+            }
+
+            UserAccount user = userRepository.findByUsername(username)
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
+
+            // 4. BẢO MẬT QUAN TRỌNG: Kiểm tra Token gửi lên có khớp với DB không
+            if (user.getRefreshToken() == null || !user.getRefreshToken().equals(refreshToken)) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body(new Message("Refresh Token is invalid or has been revoked!"));
+            }
+
+            if (!jwtService.isTokenValid(refreshToken, user)) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body(new Message("Refresh Token is expired!"));
+            }
+
+            // 6. Tạo accessToken và refreshToken mới
+            String accessToken = jwtService.generateAccessToken(user);
+            String newRefreshToken = jwtService.generateRefreshToken(user); 
+
+            // 7. Cập nhật vào DB
+            user.setAccessToken(accessToken);
+            user.setRefreshToken(newRefreshToken);
+            userRepository.save(user);
+
+            // 8. TRẢ VỀ TOKEN MỚI CHO FRONTEND (Bước quyết định)
+            Map<String, String> tokens = new HashMap<>();
+            tokens.put("accessToken", accessToken);
+            tokens.put("refreshToken", newRefreshToken);
+
+            return ResponseEntity.ok(tokens);
+
+        } catch (Exception e) {
+            // Bắt các lỗi liên quan đến giải mã JWT (ExpiredJwtException, MalformedJwtException...)
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new Message("Token processing error: " + e.getMessage()));
+        }
+    }
 }

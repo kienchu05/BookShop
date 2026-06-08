@@ -7,6 +7,7 @@ import com.example.web_ban_sach.DTO.Response.AuthenticationResponse;
 import com.example.web_ban_sach.DTO.Response.RegisterResponse;
 import com.example.web_ban_sach.Service.IService.IUserService;
 import jakarta.validation.Valid;
+import jakarta.validation.ValidationException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -46,11 +47,16 @@ public class AuthController {
         return authenticationService.activateAccount(activationCode);
     }
 
-    @PostMapping("user/login")
+    @PostMapping("/user/login")
     public ResponseEntity<AuthenticationResponse> login(@Valid @RequestBody LoginRequest loginRequest){
         AuthenticationResponse response = authenticationService.login(loginRequest);
         return ResponseEntity
                 .status(response.getStatus())
                 .body(response);
+    }
+
+    @PostMapping("/user/refresh-token")
+    public ResponseEntity<?> refreshToken(@RequestHeader("Authorization") String authHeader) throws ValidationException {
+        return authenticationService.refreshToken(authHeader);
     }
 }

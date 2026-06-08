@@ -57,7 +57,8 @@ public class BookServiceImp implements IBookService {
 
                 for (String name : bookRequest.getCategories()) {
                     // Tìm thể loại trong DB theo tên
-                    categoryRepository.findByNameIgnoreCase(name).ifPresent(category -> {
+                    categoryRepository.findByNameIgnoreCase(name)
+                            .ifPresent(category -> {
                         categoryList.add(category); // Nếu tìm thấy thì thêm vào list
                     });
                 }

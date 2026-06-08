@@ -78,8 +78,11 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.DELETE, "/book/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/book/add-book").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/book/update-book").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/user/my-profile").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/user/updateUser").authenticated()
 
                         .requestMatchers(HttpMethod.GET, "/image/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/user/refresh-token").permitAll()
 
                         .requestMatchers(HttpMethod.GET, "/user-account").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/user-account/register").permitAll()

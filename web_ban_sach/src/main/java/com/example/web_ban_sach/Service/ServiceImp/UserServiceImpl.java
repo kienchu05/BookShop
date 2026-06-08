@@ -1,5 +1,6 @@
 package com.example.web_ban_sach.Service.ServiceImp;
 
+import com.example.web_ban_sach.DTO.Request.UpdateRequest;
 import com.example.web_ban_sach.Entity.UserAccount;
 import com.example.web_ban_sach.Repository.RoleRepository;
 import com.example.web_ban_sach.Repository.UserRepository;
@@ -16,6 +17,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -70,6 +73,46 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
         }catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new Message("Lỗi khi xóa sách: " + e.getMessage()));
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> getMyProfile(Principal principal) {
+        if(principal==null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new Message("Principal Not Found !"));
+        }
+        String username = principal.getName();
+        try{
+            Optional<UserAccount> userAccount = userRepository.findByUsername(username);
+            return   ResponseEntity.ok(userAccount);
+        }catch (UsernameNotFoundException e){
+            return ResponseEntity.badRequest().body(new Message("Username Not Found !"));
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> updateUser(UpdateRequest updateRequest , String username) {
+        try {
+            Optional<UserAccount> optional = userRepository.findByUsername(username);
+            if(!optional.isPresent()) {
+                return ResponseEntity
+                        .status(HttpStatus.NOT_FOUND)
+                        .body(new Message("UserAccount Not Found !"));
+            }
+            UserAccount user = optional.get();
+            user.setName(updateRequest.getName());
+            user.setPhone(updateRequest.getPhone());
+            user.setGender(updateRequest.getGender());
+            user.setAddress(updateRequest.getAddress());
+            user.setDeliverAddress(updateRequest.getDeliverAddress());
+            user.setPurchaseAddress(updateRequest.getPurchaseAddress());
+            userRepository.save(user);
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(new Message("Cập nhật thông tin thành công !"));
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new Message("Lỗi khi thống khi lưu người dùng !"));
         }
     }
 
