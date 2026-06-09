@@ -61,36 +61,43 @@ public class SecurityConfiguration {
                         .accessDeniedHandler(errorHandler))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class) // giải mã token để lấy quyền
                 .authorizeHttpRequests(customize ->
-                customize
-                        // Thêm đường dẫn chính xác của API kiểm tra
-                        .requestMatchers(HttpMethod.GET, "/user/activate-account").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/user-account/registerUser").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/user/login").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/user/check-username").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/user/check-email").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/user-account/search/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/user-account/**").hasRole("ADMIN")
+                        customize
+                                // Thêm đường dẫn chính xác của API kiểm tra
+                                .requestMatchers(HttpMethod.GET, "/user/activate-account").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/user-account/registerUser").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/user/login").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/user/check-username").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/user/check-email").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/user-account/search/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/user-account/**").hasRole("ADMIN")
 
-                        .requestMatchers(HttpMethod.GET, "/book/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/category/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/book/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/book/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/book/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/book/add-book").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/book/update-book").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/user/my-profile").authenticated()
-                        .requestMatchers(HttpMethod.PUT, "/user/updateUser").authenticated()
+                                .requestMatchers(HttpMethod.GET, "/book/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/category/**").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/book/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.PUT, "/book/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/book/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.POST, "/book/add-book").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.PUT, "/book/update-book").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/user/my-profile").authenticated()
+                                .requestMatchers(HttpMethod.PUT, "/user/updateUser").authenticated()
 
-                        .requestMatchers(HttpMethod.POST, "/cart/add").authenticated()
-                        .requestMatchers(HttpMethod.GET, "/cart/my-cart").authenticated()
-                        .requestMatchers(HttpMethod.PUT, "/cart/update/**").authenticated()
-                        .requestMatchers(HttpMethod.DELETE, "/cart/remove/**").authenticated()
+                                .requestMatchers(HttpMethod.POST, "/cart/add").authenticated()
+                                .requestMatchers(HttpMethod.GET, "/cart/my-cart").authenticated()
+                                .requestMatchers(HttpMethod.PUT, "/cart/update/**").authenticated()
+                                .requestMatchers(HttpMethod.DELETE, "/cart/remove/**").authenticated()
+                                .requestMatchers(HttpMethod.DELETE, "/cart/clear-cart").authenticated()
 
-                        .requestMatchers(HttpMethod.GET, "/image/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/user/refresh-token").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/checkout/deliveries").authenticated()
+                                .requestMatchers(HttpMethod.GET, "/checkout/payments").authenticated()
+                                .requestMatchers(HttpMethod.POST, "/order/checkout").authenticated()
+                                .requestMatchers(HttpMethod.GET, "/order/my-order").authenticated()
+                                .requestMatchers(HttpMethod.DELETE, "/order/delete-order/**").authenticated()
 
-                        .requestMatchers(HttpMethod.GET, "/user-account").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/user-account/register").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/image/**").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/user/refresh-token").permitAll()
+
+                                .requestMatchers(HttpMethod.GET, "/user-account").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.POST, "/user-account/register").permitAll()
                 );
         return http.build();
     }
@@ -103,7 +110,7 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    //kiểm tra thông tin đăng nhập, để bạn có thể đem ra sử dụng ở các chỗ khác (ví dụ như trong API Đăng nhập).
+    //kiểm tra thông tin đăng nhập, để có thể đem ra sử dụng ở các chỗ khác (ví dụ như trong API Đăng nhập).
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) {
         log.info("Create bean Authentication *********");
         return authenticationConfiguration.getAuthenticationManager();//so sánh mật khẩu khách đưa với mật khẩu trong hồ sơ xem có khớp không. Khớp thì cấp quyền

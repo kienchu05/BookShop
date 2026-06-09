@@ -24,4 +24,6 @@ public interface IUserService {
     ResponseEntity<?> getMyProfile(Principal principal);
 
     ResponseEntity<?> updateUser(UpdateRequest updateRequest,String username);
+
+
 }

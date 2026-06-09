@@ -23,6 +23,7 @@ public class CartController {
     public ResponseEntity<?> getMyCart(Principal principal){
         return cartItemService.getMyCart(principal);
     }
+    
     @PutMapping("/cart/update/{cartItemId}")
     public ResponseEntity<?> updateCart(@PathVariable("cartItemId") Long cartItemId, Principal principal, @RequestParam int quantity){
         return cartItemService.updateCart(cartItemId, quantity, principal);
@@ -33,4 +34,8 @@ public class CartController {
         return cartItemService.deleteCartItem(cartItemId, principal);
     }
 
+    @DeleteMapping("/cart/clear-cart")
+    public ResponseEntity<?> clearCart(Principal principal){
+        return cartItemService.clearCart(principal);
+    }
 }

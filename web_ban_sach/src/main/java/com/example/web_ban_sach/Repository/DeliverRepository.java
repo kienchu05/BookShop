@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.stereotype.Repository;
 
-@RepositoryRestResource(path = "deliver")
+@Repository
 public interface DeliverRepository extends JpaRepository<Deliver, Long> , JpaSpecificationExecutor<Deliver> {
 }

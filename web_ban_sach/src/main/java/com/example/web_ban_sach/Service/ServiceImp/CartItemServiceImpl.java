@@ -103,6 +103,14 @@ public class CartItemServiceImpl implements ICartItemService {
     }
 
     @Override
+    public ResponseEntity<?> clearCart(Principal principal) {
+        UserAccount userAccount = userRepository.findByUsername(principal.getName()).orElseThrow();
+        List<CartItem> cartItems = cartItemRepository.findByUserAccount(userAccount);
+        cartItemRepository.deleteAll(cartItems);
+        return ResponseEntity.ok("Đã xóa toàn bộ đơn hàng !");
+    }
+
+    @Override
     public ResponseEntity<?> deleteCartItem(Long cartItemId, Principal principal) {
         CartItem item = cartItemRepository.findById(cartItemId).orElseThrow();
 
@@ -113,4 +121,6 @@ public class CartItemServiceImpl implements ICartItemService {
         cartItemRepository.delete(item);
         return ResponseEntity.ok("Đã xóa món hàng!");
     }
+
+
     }

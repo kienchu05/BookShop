@@ -1,6 +1,7 @@
 package com.example.web_ban_sach.Entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
@@ -30,6 +31,7 @@ public class Deliver {
     @Column(name = "deliverPrice", nullable = false )
     private double deliverPrice;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "deliver",  fetch = FetchType.LAZY)
     private List<Order> orders;
 }

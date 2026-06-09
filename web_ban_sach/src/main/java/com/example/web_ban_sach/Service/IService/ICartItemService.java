@@ -11,4 +11,5 @@ public interface ICartItemService {
     ResponseEntity<?> getMyCart(Principal principal);
     ResponseEntity<?> deleteCartItem(Long cartItemId, Principal principal);
     ResponseEntity<?> updateCart(Long cartItemId, int quantity, Principal principal);
+    ResponseEntity<?> clearCart(Principal principal);
 }
