@@ -84,6 +84,9 @@ public class UserAccount implements UserDetails {
             @JsonIgnore
     List<Roles> roles;
 
+    @OneToMany(mappedBy = "userAccount", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CartItem> cartItems;
+
     @OneToMany(mappedBy = "userAccount",
             cascade = CascadeType.ALL, orphanRemoval = true)
     List<RatingBook> ratingBooks;

@@ -81,6 +81,11 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET, "/user/my-profile").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/user/updateUser").authenticated()
 
+                        .requestMatchers(HttpMethod.POST, "/cart/add").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/cart/my-cart").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/cart/update/**").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/cart/remove/**").authenticated()
+
                         .requestMatchers(HttpMethod.GET, "/image/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/user/refresh-token").permitAll()
 

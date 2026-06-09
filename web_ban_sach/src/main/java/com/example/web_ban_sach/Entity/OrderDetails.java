@@ -30,4 +30,6 @@ public class OrderDetails {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "orderId" ,nullable = false)
     private Order order;
+
+
 }

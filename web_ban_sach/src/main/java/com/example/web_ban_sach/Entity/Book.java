@@ -58,6 +58,9 @@ public class Book {
     // OFFSET 0 ROWS FETCH NEXT 8 ROWS ONLY;
     List<Category> categories;
 
+    @OneToMany(mappedBy = "book", orphanRemoval = true)
+    private List<CartItem> cartItems;
+
     @OneToMany(mappedBy = "book",
             cascade = CascadeType.ALL,
             orphanRemoval = true )//Hibernate tự dọn dẹp ảnh tồn dư)
