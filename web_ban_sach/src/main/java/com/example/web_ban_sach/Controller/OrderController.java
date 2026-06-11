@@ -13,11 +13,6 @@ import java.security.Principal;
 public class OrderController {
     private IOrderService orderService;
 
-    @PostMapping("/order/checkout")
-    public ResponseEntity<?> checkout(@RequestBody CheckOutRequest request, Principal principal) {
-        return orderService.checkout(request, principal);
-    }
-
     @GetMapping("/order/my-order")
     public ResponseEntity<?> getMyOrders(Principal principal) {
         return orderService.getMyOrders(principal);

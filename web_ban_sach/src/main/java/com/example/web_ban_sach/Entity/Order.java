@@ -26,7 +26,6 @@ public class Order {
     @CreationTimestamp
     private LocalDateTime creationDate;
 
-
     @Column(name = "purchaseAddress", nullable = false)
     private String purchaseAddress;
 
@@ -38,6 +37,12 @@ public class Order {
 
     @Column(name = "shippingPrice")
     private double shippingPrice;
+
+    @Column(name = "txnRef")
+    private String paymentTxnRef;
+
+    @Column(name = "status")
+    private String status;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderDetails> orderDetails;

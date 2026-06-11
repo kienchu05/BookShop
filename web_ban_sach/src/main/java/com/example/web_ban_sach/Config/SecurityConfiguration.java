@@ -92,6 +92,7 @@ public class SecurityConfiguration {
                                 .requestMatchers(HttpMethod.POST, "/order/checkout").authenticated()
                                 .requestMatchers(HttpMethod.GET, "/order/my-order").authenticated()
                                 .requestMatchers(HttpMethod.DELETE, "/order/delete-order/**").authenticated()
+                                .requestMatchers(HttpMethod.GET, "/checkout/vn-pay").permitAll()
 
                                 .requestMatchers(HttpMethod.GET, "/image/**").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/user/refresh-token").permitAll()

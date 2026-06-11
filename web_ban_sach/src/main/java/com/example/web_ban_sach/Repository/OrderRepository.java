@@ -8,8 +8,10 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @RepositoryRestResource(path = "order")
 public interface OrderRepository extends JpaRepository<Order,Long> , JpaSpecificationExecutor<Order> {
     List<Order> findByUserAccountOrderByCreationDateDesc(UserAccount userAccount);
+    Optional<Order> findByPaymentTxnRef(String txnRef);
 }
