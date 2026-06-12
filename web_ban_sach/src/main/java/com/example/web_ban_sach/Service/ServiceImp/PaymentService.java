@@ -109,7 +109,7 @@ public class PaymentService implements IPaymentService {
         // Lưu order vào db sẽ tự lưu luôn list OrderDetail do cascadeType.ALL
         orderRepository.save(order);
         // Dọn sạch giỏ hàng
-        cartItemRepository.deleteAll(cartItems);
+        cartItemRepository.deleteAll(cartItems); //xóa danh sách cartItems
 
         if (payment.getPaymentId() == 5) {
             long amount = (long) (order.getTotalPrice() * 100); // VNPay yêu cầu số tiền nhân 100
@@ -197,8 +197,15 @@ public class PaymentService implements IPaymentService {
         log.info("Chuỗi Query String nguyên gốc: {}", request.getQueryString());
         // 1. Tự tay lấy các tham số nguyên gốc từ Request để tránh Spring Boot làm sai lệch
         Map<String, String> fields = new HashMap<>();
+
+        //numeration<String> params = request.getParameterNames() :
+        //chỉ liệt kê tên của tất cả các trường (key) mà VNPay gửi về: [vnp_Amount, vnp_TxnRef, vnp_BankCode, vnp_ResponseCode, ...].
+        //Nó chỉ chứa tên, chưa hề chứa giá trị.
+
+        //params.hasMoreElements() : tìm lần lượt từ trên xuống dưới đối với mỗi một key trong mảng response của VNPay
+        //Nếu còn thì đi tiếp vào trong vòng lặp.
         for (Enumeration<String> params = request.getParameterNames(); params.hasMoreElements(); ) {
-            String fieldName = params.nextElement();
+            String fieldName = params.nextElement(); //đọc cái tên tiếp theo trên danh sách. Ví dụ: fieldName = "vnp_Amount".
             String fieldValue = request.getParameter(fieldName);
             if (fieldValue != null && fieldValue.length() > 0) {
                 fields.put(fieldName, fieldValue);
@@ -236,6 +243,7 @@ public class PaymentService implements IPaymentService {
                     order.setStatus("CANCELLED"); // Hoặc "FAILED"
                     orderRepository.save(order);
 
+                    //neu bi loi trong qua trinh thanh toan thi phai hoan lai so luong sach
                     for(OrderDetails orderDetails : order.getOrderDetails()) {
                         Book book = orderDetails.getBook();
                         book.setQuantity(orderDetails.getQuantity() + book.getQuantity());
