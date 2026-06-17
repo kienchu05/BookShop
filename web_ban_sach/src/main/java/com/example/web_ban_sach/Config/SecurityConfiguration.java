@@ -70,6 +70,7 @@ public class SecurityConfiguration {
                                 .requestMatchers(HttpMethod.GET, "/user/check-email").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/user-account/search/**").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.DELETE, "/user-account/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/order/dashboard").hasRole("ADMIN")
 
                                 .requestMatchers(HttpMethod.GET, "/book/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/category/**").permitAll()

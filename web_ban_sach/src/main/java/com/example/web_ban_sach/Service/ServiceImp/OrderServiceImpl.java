@@ -2,6 +2,7 @@ package com.example.web_ban_sach.Service.ServiceImp;
 
 import com.example.web_ban_sach.Config.VNPayConfig;
 import com.example.web_ban_sach.DTO.Request.CheckOutRequest;
+import com.example.web_ban_sach.DTO.Response.MonthlyRevenueResponse;
 import com.example.web_ban_sach.DTO.Response.OrderDetailResponse;
 import com.example.web_ban_sach.DTO.Response.OrderResponse;
 import com.example.web_ban_sach.Entity.*;
@@ -84,5 +85,22 @@ public class OrderServiceImpl implements IOrderService {
         }
         orderRepository.delete(order); //tu dong xoa orderDetail theo 
         return ResponseEntity.ok(new Message("Đã hủy đơn hàng thành công!"));
+    }
+
+    @Override
+    public ResponseEntity<?> getDashboard(Principal principal) {
+        Double totalRevenue = orderRepository.calculateTotalPrice();
+        if(totalRevenue == null){
+            totalRevenue = 0.0;
+        }
+        Long successOrders = orderRepository.countByStatus("PAID");
+        List<MonthlyRevenueResponse> monthlyRevenueResponses = orderRepository.calculateMonthlyRevenue();
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("totalRevenue",totalRevenue);
+        map.put("successOrders",successOrders);
+        map.put("monthlyRevenueResponses",monthlyRevenueResponses);
+
+        return ResponseEntity.ok().body(map);
     }
 }

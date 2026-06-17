@@ -9,4 +9,5 @@ import java.security.Principal;
 public interface IOrderService {
     ResponseEntity<?> getMyOrders(Principal principal);
     ResponseEntity<?> deleteOrder(Long id ,Principal principal);
+    ResponseEntity<?> getDashboard(Principal principal);
 }

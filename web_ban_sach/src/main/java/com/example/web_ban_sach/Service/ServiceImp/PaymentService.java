@@ -75,6 +75,12 @@ public class PaymentService implements IPaymentService {
         order.setShippingPrice(deliver.getDeliverPrice());
         order.setTotalPrice(total + deliver.getDeliverPrice());
 
+        if(payment.getPaymentId() == 5){
+            order.setStatus("PENDING");
+        }else{
+            order.setStatus("PAID");
+        }
+
         //Khoi tao List<> OrderDetails
         List<OrderDetails> orderDetails = new ArrayList<>();
 
@@ -90,7 +96,7 @@ public class PaymentService implements IPaymentService {
             int requestedQty = cartItem.getQuantity();
 
             if (currentStock < requestedQty) {
-                // Tùy chọn: Quăng lỗi chặn đơn hàng nếu không đủ sách
+                // Tùy chọn: Throw lỗi chặn đơn hàng nếu không đủ sách
                 throw new RuntimeException("Sách '" + book.getName() + "' không đủ số lượng trong kho!");
             }
             book.setQuantity(currentStock - requestedQty);
@@ -186,6 +192,7 @@ public class PaymentService implements IPaymentService {
         }
 
         // Nếu là COD, trả về cấu trúc thông báo thành công thông thường
+
         Map<String, String> result = new HashMap<>();
         result.put("status", "SUCCESS");
         result.put("message", "Đặt hàng thành công !");
