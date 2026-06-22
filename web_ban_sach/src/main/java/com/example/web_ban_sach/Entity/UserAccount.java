@@ -55,10 +55,10 @@ public class UserAccount implements UserDetails {
     @Column(name = "deliverAddress")
     private String deliverAddress;
 
-    @Column(name = "accessToken", length = 150, unique = true,  nullable = true)
+    @Column(name = "accessToken", unique = true,  nullable = true)
     private String accessToken;
 
-    @Column(name = "refreshToken" ,  length = 150, unique = true,  nullable = true)
+    @Column(name = "refreshToken",  unique = true,  nullable = true)
     private String refreshToken;
 
     @Column(name = "isActivated")
@@ -73,8 +73,8 @@ public class UserAccount implements UserDetails {
 
     @ManyToMany(fetch = FetchType.EAGER,
             cascade = {
-            CascadeType.PERSIST,  CascadeType.MERGE,
-            CascadeType.REFRESH, CascadeType.DETACH
+            CascadeType.MERGE,
+            CascadeType.REFRESH
     })
     @JoinTable(
             name = "user_role",

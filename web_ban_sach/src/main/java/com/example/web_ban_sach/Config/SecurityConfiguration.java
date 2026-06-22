@@ -5,16 +5,19 @@ import com.example.web_ban_sach.Repository.UserRepository;
 import com.example.web_ban_sach.Service.ServiceImp.UserServiceImpl;
 import com.example.web_ban_sach.exception.ErrorHandler;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -27,10 +30,21 @@ import java.util.Arrays;
 
 @Configuration
 @Slf4j
-@AllArgsConstructor
+@EnableWebSecurity
 public class SecurityConfiguration {
     private final UserRepository userRepository;
     private final JwtAuthenticationFilter  jwtAuthenticationFilter;
+    private final OAuth2AuthenticationSuccessHandle oAuth2AuthenticationSuccessHandle;
+
+    // Tự viết Constructor và thêm @Lazy vào các Bean gây vòng lặp
+    public SecurityConfiguration(
+            UserRepository userRepository,
+            JwtAuthenticationFilter jwtAuthenticationFilter,
+            @Lazy OAuth2AuthenticationSuccessHandle oAuth2AuthenticationSuccessHandle) { // <--- THÊM @LAZY Ở ĐÂY
+        this.userRepository = userRepository;
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        this.oAuth2AuthenticationSuccessHandle = oAuth2AuthenticationSuccessHandle;
+    }
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -71,6 +85,7 @@ public class SecurityConfiguration {
                                 .requestMatchers(HttpMethod.GET, "/user-account/search/**").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.DELETE, "/user-account/**").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/order/dashboard").hasRole("ADMIN")
+                                .requestMatchers("/login/oauth2/code/google/**").permitAll()
 
                                 .requestMatchers(HttpMethod.GET, "/book/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/category/**").permitAll()
@@ -100,6 +115,9 @@ public class SecurityConfiguration {
 
                                 .requestMatchers(HttpMethod.GET, "/user-account").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.POST, "/user-account/register").permitAll()
+                )
+                .oauth2Login(oauth2 -> oauth2
+                .successHandler(oAuth2AuthenticationSuccessHandle)
                 );
         return http.build();
     }
